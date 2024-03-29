@@ -1,0 +1,13 @@
+name: test
+
+on:
+  workflow_call:
+
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+jobs:
+  test:
+    steps:
+      - uses: actions/checkout@v4

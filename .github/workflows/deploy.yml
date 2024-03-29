@@ -1,0 +1,45 @@
+name: deploy
+
+on:
+  workflow_call:
+    inputs:
+      ssh_host:
+        description: 'ssh_host'
+        type: string
+        required: false
+        default: ''
+      ssh_user:
+        description: 'ssh_user'
+        type: string
+        required: false
+        default: ''
+      ssh_key:
+        description: 'ssh_key'
+        type: string
+        required: false
+        default: ''
+      env:
+        description: 'Env'
+        type: string
+        required: false
+        default: 'dev'
+
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
+        run: |
+             echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config && chmod 700 ~/.ssh
+             eval $(ssh-agent -s) && bash -c 'ssh-add <(echo ${{ inputs.ssh_key }})'
+             cd .build
+             export ENV=${{ inputs.env }}
+             export TAG=${{ github.run_number }}
+             export DOCKER_HOST=ssh://${{ inputs.ssh_host }}
+             make deploy
+
