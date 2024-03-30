@@ -39,17 +39,15 @@ jobs:
              chmod 700 /home/runner/.ssh/
              ssh-agent -a $SSH_AUTH_SOCK > /dev/null
              ssh-add /home/runner/.ssh/github_actions
-             ssh github@158.160.134.89 ls -la
 
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
              cd .build
-             ssh-add -l
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
-             ssh -vv ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} ls -la
+             docker pull ghcr.io/steel0237-sprintf/test/nginx:$TAG
              make deploy
 
