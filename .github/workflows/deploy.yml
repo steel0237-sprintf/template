@@ -41,10 +41,11 @@ jobs:
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-             echo ${{ secrets.SSH_HOST }}
              cd .build
+             ssh-add -l
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+             ssh -vv ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} ls -la
              make deploy
 
