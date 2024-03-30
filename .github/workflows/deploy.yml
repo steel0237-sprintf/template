@@ -7,6 +7,8 @@ on:
         description: 'secret 1'
       SSH_KEY:
         description: 'secret 2'
+      SSH_USER:
+        description: 'secret 2'
     inputs:
       env:
         description: 'Env'
@@ -43,6 +45,6 @@ jobs:
              cd .build
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
-             export DOCKER_HOST=ssh://${{ secrets.ssh_host }}
+             export DOCKER_HOST=ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
              make deploy
 
