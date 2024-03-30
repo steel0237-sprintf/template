@@ -36,7 +36,7 @@ jobs:
              chmod 700 ~/.ssh
              ssh-agent -a $SSH_AUTH_SOCK > /dev/null
              ssh-add /home/runner/.ssh/github_actions
-             ssh -vvv github@158.160.134.89 ls -la
+             ssh -vvv -o StrictHostKeyChecking=no github@158.160.134.89 ls -la
 
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         env:
