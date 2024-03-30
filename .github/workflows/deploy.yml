@@ -7,7 +7,6 @@ on:
         description: 'secret 1'
       SSH_KEY:
         description: 'secret 2'
-
     inputs:
       env:
         description: 'Env'
@@ -27,7 +26,6 @@ jobs:
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         run: |
              echo ${{ secrets.SSH_HOST }}
-#             echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config && chmod 700 ~/.ssh
              eval $(ssh-agent -s) && bash -c 'ssh-add <(echo ${{ secrets.SSH_KEY }})'
              cd .build
              export ENV=${{ inputs.env }}
