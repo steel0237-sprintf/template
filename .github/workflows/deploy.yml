@@ -2,22 +2,13 @@ name: deploy
 
 on:
   workflow_call:
+    secrets:
+      SSH_HOST:
+        description: 'secret 1'
+      SECRET_2:
+        description: 'secret 2'
+
     inputs:
-      ssh_host:
-        description: 'ssh_host'
-        type: string
-        required: false
-        default: ''
-      ssh_user:
-        description: 'ssh_user'
-        type: string
-        required: false
-        default: ''
-      ssh_key:
-        description: 'ssh_key'
-        type: string
-        required: false
-        default: ''
       env:
         description: 'Env'
         type: string
