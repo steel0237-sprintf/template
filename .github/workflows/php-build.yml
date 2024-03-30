@@ -20,6 +20,9 @@ env:
 
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-latest
     steps:
 #      - name: Set up Docker Buildx
