@@ -30,13 +30,14 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
              mkdir -p /home/runner/.ssh
-             echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+             echo "Host *\n\tStrictHostKeyChecking no\n\n" > /home/runner/.ssh/config
+             cat /home/runner/.ssh/config
              echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
              chmod 600 /home/runner/.ssh/github_actions
-             chmod 700 ~/.ssh
+             chmod 700 /home/runner/.ssh/
              ssh-agent -a $SSH_AUTH_SOCK > /dev/null
              ssh-add /home/runner/.ssh/github_actions
-             ssh -vvv -o StrictHostKeyChecking=no github@158.160.134.89 ls -la
+             ssh github@158.160.134.89 ls -la
 
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         env:
