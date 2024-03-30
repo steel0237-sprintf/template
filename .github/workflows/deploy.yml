@@ -54,6 +54,5 @@ jobs:
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
-             docker pull ghcr.io/steel0237-sprintf/test/nginx:$TAG
              make deploy
 
