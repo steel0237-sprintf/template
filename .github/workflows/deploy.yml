@@ -36,6 +36,7 @@ jobs:
              chmod 600 /home/runner/.ssh/github_actions
              ssh-agent -a $SSH_AUTH_SOCK > /dev/null
              ssh-add /home/runner/.ssh/github_actions
+             ssh -vv ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} ls -la
 
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         env:
