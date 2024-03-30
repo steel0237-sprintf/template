@@ -5,7 +5,7 @@ on:
     secrets:
       SSH_HOST:
         description: 'secret 1'
-      SECRET_2:
+      SSH_KEY:
         description: 'secret 2'
 
     inputs:
@@ -26,12 +26,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         run: |
-             echo ${{ inputs.ssh_host }}
-             echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config && chmod 700 ~/.ssh
-             eval $(ssh-agent -s) && bash -c 'ssh-add <(echo ${{ inputs.ssh_key }})'
+             echo ${{ secrets.SSH_HOST }}
+#             echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config && chmod 700 ~/.ssh
+             eval $(ssh-agent -s) && bash -c 'ssh-add <(echo ${{ secrets.SSH_KEY }})'
              cd .build
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
-             export DOCKER_HOST=ssh://${{ inputs.ssh_host }}
+             export DOCKER_HOST=ssh://${{ secrets.ssh_host }}
              make deploy
 
