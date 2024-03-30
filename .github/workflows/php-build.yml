@@ -41,4 +41,4 @@ jobs:
              find app_putevka/config -name '*.'${ENV} -exec sh -c 'mv "$0" "${0%.${ENV}}.php"' {} \;
              ls -la app_putevka/config
              cd .build
-             docker buildx bake -f docker-compose.yaml -f docker-compose.pro.yaml --pull --push
+             docker buildx bake -f docker-compose.yaml -f docker-compose.pro.yaml --file docker-compose-cache.json --pull --push
