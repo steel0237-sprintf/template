@@ -30,8 +30,10 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
              mkdir -p /home/runner/.ssh
-             echo "Host *\n\tStrictHostKeyChecking no\n\n" > /home/runner/.ssh/config
-             cat /home/runner/.ssh/config
+             cat >>~/.ssh/config <<END
+               Host *
+                 StrictHostKeyChecking no
+             END
              echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
              chmod 600 /home/runner/.ssh/github_actions
              chmod 700 /home/runner/.ssh/
