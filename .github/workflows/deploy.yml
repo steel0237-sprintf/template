@@ -33,9 +33,10 @@ jobs:
              echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
              echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
              chmod 600 /home/runner/.ssh/github_actions
+             chmod 700 ~/.ssh
              ssh-agent -a $SSH_AUTH_SOCK > /dev/null
              ssh-add /home/runner/.ssh/github_actions
-             ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} ls -la
+             ssh -vvv github@158.160.134.89 ls -la
 
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         env:
