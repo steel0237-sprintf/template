@@ -26,11 +26,10 @@ jobs:
       - name: Add SSH key
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
              mkdir -p /home/runner/.ssh
-             ssh-keyscan $SSH_HOST >> /home/runner/.ssh/known_hosts
+#             echo ${{ secrets.SSH_HOST }}
+#             ssh-keyscan ${{ secrets.SSH_HOST }} >> /home/runner/.ssh/known_hosts
              echo "$SSH_KEY" > /home/runner/.ssh/github_actions
              chmod 600 /home/runner/.ssh/github_actions
              ssh-agent -a $SSH_AUTH_SOCK > /dev/null
