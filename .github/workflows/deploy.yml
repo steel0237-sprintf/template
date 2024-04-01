@@ -54,6 +54,8 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
              cd .build
+             git clone https://.:${{ secrets.GITHUB_TOKEN }}@steel0237-sprintf/template.git target
+             ls -la ./target
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ inputs.ssh_host }}
