@@ -65,6 +65,6 @@ jobs:
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ inputs.ssh_host }}
              pwd
-             ls -la my-tools/
-             cd /home/runner/work/test/test/my-tools
+             ls -la 
+             cd /home/runner/work/test/test/tools
              ls -la
