@@ -28,12 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Checkout tools repo
-        uses: actions/checkout@v4
-        with:
-          repository: steel0237-sprintf/template
-          path: my-tools
-          ref: main
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -54,6 +49,13 @@ jobs:
              chmod 700 /home/runner/.ssh/
              ssh-agent -a $SSH_AUTH_SOCK > /dev/null
              ssh-add /home/runner/.ssh/github_actions
+
+      - name: Checkout tools repo
+        uses: actions/checkout@v4
+        with:
+          repository: steel0237-sprintf/template
+          path: ./tools
+          ref: main
 
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         env:
