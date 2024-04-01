@@ -57,4 +57,5 @@ jobs:
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ inputs.ssh_host }}
-             "${{ github.action_path }}/docker-stack-wait-deploy.sh"
+             ls -la "${{ github.action_path }}"
+             ./docker-stack-wait-deploy.sh
