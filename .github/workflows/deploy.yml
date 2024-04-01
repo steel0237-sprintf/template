@@ -2,22 +2,14 @@ name: deploy
 
 on:
   workflow_call:
+    secrets:
+      SSH_HOST:
+        description: 'secret 1'
+      SSH_KEY:
+        description: 'secret 2'
+      SSH_USER:
+        description: 'secret 2'
     inputs:
-      ssh_host:
-        description: 'ssh_host'
-        type: string
-        required: false
-        default: ''
-      ssh_user:
-        description: 'ssh_user'
-        type: string
-        required: false
-        default: ''
-      ssh_key:
-        description: 'ssh_key'
-        type: string
-        required: false
-        default: ''
       env:
         description: 'Env'
         type: string
@@ -30,17 +22,39 @@ env:
 
 jobs:
   deploy:
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Add SSH key
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-             echo ${{ inputs.ssh_host }}
-             echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config && chmod 700 ~/.ssh
-             eval $(ssh-agent -s) && bash -c 'ssh-add <(echo ${{ inputs.ssh_key }})'
+             mkdir -p /home/runner/.ssh
+             cat >>~/.ssh/config <<END
+               Host *
+                 StrictHostKeyChecking no
+             END
+             echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
+             chmod 600 /home/runner/.ssh/github_actions
+             chmod 700 /home/runner/.ssh/
+             ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+             ssh-add /home/runner/.ssh/github_actions
+
+      - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
              cd .build
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ inputs.ssh_host }}
              "${{ github.action_path }}/docker-stack-wait-deploy.sh"
-
