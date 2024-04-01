@@ -28,6 +28,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Checkout tools repo
+        uses: actions/checkout@v4
+        with:
+          repository: steel0237-sprintf/template
+          path: my-tools
+          ref: main
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -54,10 +60,6 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
              cd .build
-             git clone https://.:${{ secrets.GITHUB_TOKEN }}@steel0237-sprintf/template.git target
-             ls -la ./target
              export ENV=${{ inputs.env }}
              export TAG=${{ github.run_number }}
              export DOCKER_HOST=ssh://${{ inputs.ssh_host }}
-             ls -la "${{ github.action_path }}"
-             ./docker-stack-wait-deploy.sh
