@@ -35,7 +35,7 @@ jobs:
           repository: steel0237-sprintf/template
           path: ./tools
           ref: main
-          token: $GITHUB_TOKEN
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Deploy env:${{ inputs.env }} ${{ github.repository }} tag ${{ github.run_number }}
         env:
