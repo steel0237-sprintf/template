@@ -29,27 +29,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Add SSH key
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-             mkdir -p /home/runner/.ssh
-             cat >>~/.ssh/config <<END
-               Host *
-                 StrictHostKeyChecking no
-             END
-             echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/github_actions
-             chmod 600 /home/runner/.ssh/github_actions
-             chmod 700 /home/runner/.ssh/
-             ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-             ssh-add /home/runner/.ssh/github_actions
-
       - name: Checkout tools repo
         uses: actions/checkout@v4
         with:
