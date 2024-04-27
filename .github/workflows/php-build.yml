@@ -40,6 +40,7 @@ jobs:
              echo $CONFIG
              echo $ENV
              env
+             echo ${{ vars.CONFIG_JSON }}
 
             # find app_putevka/config -name '*.'${ENV} -exec sh -c 'mv "$0" "${0%.${ENV}}.php"' {} \;
             # ls -la app_putevka/config
