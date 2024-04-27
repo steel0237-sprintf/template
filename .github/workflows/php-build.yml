@@ -11,8 +11,8 @@ on:
       env:
         description: 'Env'
         type: string
-        required: false
-        default: 'dev'
+        required: true
+        default: 'stage'
       config:
         description: 'config'
         type: string
