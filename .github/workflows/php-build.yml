@@ -35,7 +35,7 @@ jobs:
       - name: Build the Docker image for ${{ github.repository }} tag ${{ github.run_number }} and push GHCR
         run: |
              export ENV=${{ inputs.env }}
-             export CONFIG=${{ inputs.config }}
+             export ENV=${ENV:-stage}
              export TAG=${{ github.run_number }}
              echo $CONFIG
              echo $ENV
