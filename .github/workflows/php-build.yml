@@ -13,6 +13,11 @@ on:
         type: string
         required: false
         default: 'dev'
+      config:
+        description: 'config'
+        type: string
+        required: false
+        default: 'dev'
 
 env:
   DOCKER_BUILDKIT: 1
@@ -39,6 +44,8 @@ jobs:
       - name: Build the Docker image for ${{ github.repository }} tag ${{ github.run_number }} and push GHCR
         run: |
              export ENV=${{ inputs.env }}
+             export CONFIG=${{ inputs.config }}
+             echo $CONFIG
              export TAG=${{ github.run_number }}
              find app_putevka/config -name '*.'${ENV} -exec sh -c 'mv "$0" "${0%.${ENV}}.php"' {} \;
              ls -la app_putevka/config
