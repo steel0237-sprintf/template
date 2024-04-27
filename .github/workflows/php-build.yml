@@ -35,11 +35,8 @@ jobs:
       - name: Build the Docker image for ${{ github.repository }} tag ${{ github.run_number }} and push GHCR
         run: |
              export ENV=${{ inputs.env }}
-             export ENV=${ENV:-stage}
              export TAG=${{ github.run_number }}
-             echo $CONFIG
              echo $ENV
-             env
              echo ${{ vars.CONFIG_JSON }}
 
             # find app_putevka/config -name '*.'${ENV} -exec sh -c 'mv "$0" "${0%.${ENV}}.php"' {} \;
