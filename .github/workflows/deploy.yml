@@ -13,8 +13,8 @@ on:
       env:
         description: 'Env'
         type: string
-        required: false
-        default: 'dev'
+        required: true
+        default: ''
 
 env:
   DOCKER_BUILDKIT: 1
@@ -26,6 +26,8 @@ jobs:
       contents: read
       packages: write
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.env }}
     steps:
       - uses: actions/checkout@v4
 
